@@ -1,6 +1,7 @@
 const User = require('../Models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mailSender = require('../config/mailSender');
 
 const registerUser = async(req, res) =>{
     const {user, email, password} = req.body;
@@ -22,7 +23,7 @@ const registerUser = async(req, res) =>{
             //const newEntry = new User(req.body);
             //newEntry.save();
             //console.log(newEntry);
-
+            await mailSender(newEntry, 'verify-mail');
             return res.status(200).send({success:true,msg:  "registration sucessful"});
         } catch (error) {
             return res.status(400).send({success:false, msg:error});
